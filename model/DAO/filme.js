@@ -9,17 +9,30 @@
     Bancos de dados relacionais:
         Sequelize -> Tradicional/utilizada em mercado em vários projetos desde o inicio do node
         Prisma    -> É uma dependencia atual, que trabalha com o BD (MySQL, PostgreSQL, SQL Server) (SQL ou ORM)
+        Comandos para instalação:
+        npm install prisma --save           -> Instalar o prisma (Conexão com o Database)
+        npm install @prisma/client --save   -> Instalar o cliente do prisma (Executar scripts SQL no banco(BD))
+        npx prisma init                     -> Prompt de comando para inicializar o prisma no projeto
+        npx prisma migrate dev              -> Realiza o sincronismo entre o prisma e o bd (CUIDADO!!!!!!!,
+                                            nesse processo você poderá perder dados reais do BD, pois
+                                            ele pega e cria as tabelas programadas no ORM schema.prisma)
+        npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o BD, geralmente
+                                            usamos para rodar o projeto em um PC novo.
+
         Knex      -> É uma dependencia atual, que trabalha com MySQL
 
     Banco de dados não relacionais:
         Mongoose  -> É uma dependencia para o Mongo DB (Não relacional)
+
+
+        
 */
 
 //Importe da dependencia do Prisma que permite a execução de script SQL no BD
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require('../../generated/prisma')
 
 //Cria um novo objeto baseado na classe do PrismaClient
-const prisma = new PrismaClient
+const prisma = new PrismaClient()
 
 //Se não devolve algum valor do banco utilize: $execute
     //A variavel é pega, enviada para o banco de dados, vai devolver um resultado. $execute
@@ -35,7 +48,6 @@ const getSelectAllMovies = async function(){
 
         //Encaminha para o BD o script SQL
         let result = await prisma.$queryRawUnsafe(sql)
-
         if(result.length > 0)
             return result
         else
