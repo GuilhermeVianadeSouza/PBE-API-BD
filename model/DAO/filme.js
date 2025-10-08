@@ -29,6 +29,7 @@
 */
 
 //Importe da dependencia do Prisma que permite a execução de script SQL no BD
+//const {PrismaClient} = require(@prisma/client)
 const { PrismaClient } = require('../../generated/prisma')
 
 //Cria um novo objeto baseado na classe do PrismaClient
@@ -48,7 +49,8 @@ const getSelectAllMovies = async function(){
 
         //Encaminha para o BD o script SQL
         let result = await prisma.$queryRawUnsafe(sql)
-        if(result.length > 0)
+
+        if(Array.isArray(result))
             return result
         else
             return false
@@ -60,7 +62,22 @@ const getSelectAllMovies = async function(){
 
 //Retorna um filme filtrando através do ID do banco de dados
 const getSelectByIdMovies = async function(id){
+    try { //Try: Coloque o código
+        
+        //Script SQL
+        let sql = `select * from tbl_filme where id=${id}`
 
+        //Encaminha para o BD o script SQL
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if(Array.isArray(result))
+            return result
+        else
+            return false
+    } catch (error) {
+        // console.log(error)
+        return false
+    }
 }
 
 //Insere um filme novo no banco de dados
@@ -79,5 +96,6 @@ const setDeleteMovies = async function(id){
 }
 
 module.exports= {
-    getSelectAllMovies
+    getSelectAllMovies,
+    getSelectByIdMovies
 }
