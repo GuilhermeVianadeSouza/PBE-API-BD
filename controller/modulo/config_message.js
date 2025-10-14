@@ -21,14 +21,15 @@ const DEFAULT_HEADER    =   { development: 'Guilherme Viana de Souza',
 
 
 /*********************************************************MESSAGENS DE SUCESSO *******************************************************************/
-const SUCESS_REQUEST   =   {status: true,
+const SUCESS_REQUEST        =   {status: true,
                                     status_code: 200,
                                     message: 'Requisição bem sucedida!!!!'
-                                    }
+                                }
 
-const SUCESS_CREATED    =  {
-
-                            }
+const SUCESS_CREATED_ITEM   =  {status: true,
+                                status_code: 201,
+                                message: 'Item criado com sucesso!!!'
+                                }
 
 /**********************************************************MESSAGENS DE ERRO **********************************************************************/
 
@@ -52,11 +53,18 @@ const ERROR_REQUIRED_FIELDS     =           {status: false,
                                             message: 'Não foi possível processar a requisição pois existem campos obrigatórios que devem ser encaminhados e atendidos conforme a documentação.'
                                             }
 
+const ERROR_CONTENT_TYPE     =              {status: false,
+                                            status_code: 415,
+                                            message: 'Não foi possível processar a requisição, pois o tipo de dados enviado no corpo deve ser JSON !!!'
+                                            }
+
 module.exports = {
     DEFAULT_HEADER,
     SUCESS_REQUEST,
+    SUCESS_CREATED_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,
-    ERROR_REQUIRED_FIELDS
+    ERROR_REQUIRED_FIELDS,
+    ERROR_CONTENT_TYPE
 }
