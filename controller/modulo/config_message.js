@@ -27,8 +27,13 @@ const SUCESS_REQUEST        =   {status: true,
                                 }
 
 const SUCESS_CREATED_ITEM   =  {status: true,
-                                status_code: 201,
-                                message: 'Item criado com sucesso!!!'
+                                    status_code: 201,
+                                    message: 'Item criado com sucesso!!!'
+                                }
+
+const SUCESS_UPDATED_ITEM   =  {status: true,
+                                    status_code: 200,
+                                    message: 'Item Atualizado com sucesso!!!'
                                 }
 
 /**********************************************************MESSAGENS DE ERRO **********************************************************************/
@@ -62,6 +67,7 @@ module.exports = {
     DEFAULT_HEADER,
     SUCESS_REQUEST,
     SUCESS_CREATED_ITEM,
+    SUCESS_UPDATED_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,
