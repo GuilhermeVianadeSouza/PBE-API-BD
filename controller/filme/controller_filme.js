@@ -151,8 +151,32 @@ const atualizarFilme = async function(filme, id, contentType){
 //Exclui um filme filtrando pelo ID
 const excluirFilme = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-}
+    try {
+                    //Validação de ID válido. Chama à função da controller que verifica no BD se o ID existe e valida o ID
+                    let validarID = await buscarFilmesId(id)
+                    if(validarID.status_code == 200){
+                        //Adiciona o ID do filme no JSON de dados para ser encaminhado ao DAO
+                        id = Number(id)
 
+                        //Processamento da verdadeira.
+                        //Chama a função para Atualizar um novo filme no Banco de Dados.
+                        let resultFilmes = await filmeDAO.setDeleteMovies(id)
+                        if (resultFilmes){
+                            MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_DELETED_ITEM.status
+                            MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_DELETED_ITEM.status_code
+                            MESSAGES.DEFAULT_HEADER.message         =       MESSAGES.SUCESS_DELETED_ITEM.message
+
+                            return MESSAGES.DEFAULT_HEADER //200
+                        } else {
+                            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                        }
+                    } else{
+                        return validarID //A função buscarFilmeID poderá retornar(400 ou 404 ou 500)
+                    }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500        
+    } 
+}
 //validação dos dados de cadastro e atualização do filme. Função privada, apenas dessa controller
 const validarDadosFilme = async function (filme) {
     
@@ -195,5 +219,6 @@ module.exports = {
     listarFilmes,
     buscarFilmesId,
     inserirFilme,
-    atualizarFilme
+    atualizarFilme,
+    excluirFilme
 }
