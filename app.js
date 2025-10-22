@@ -27,6 +27,7 @@ app.use((request, response, next) =>{
 
 //import das controllers
 const controllerFilme = require('./controller/filme/controller_filme.js')
+const controllerIdioma = require('./controller/idioma/controller_idioma.js')
 
 //EndPoinst para a rota de Filme
 
@@ -85,6 +86,40 @@ app.delete('/v1/locadora/filme/:id', cors(), async function (request, response){
     let filme = await controllerFilme.excluirFilme(idFilme)
     response.status(filme.status_code)
     response.json(filme)
+})
+
+app.get('/v1/locadora/idioma', cors(), async function (request, response){
+    let idioma = await controllerIdioma.listarIdiomas()
+
+    response.status(idioma.status_code)
+    response.json(idioma)
+})
+
+app.get('/v1/locadora/idioma/:id', cors(), async function (request, response){
+    let idIdioma = request.params.id
+
+    let idioma = await controllerIdioma.listarIdiomaPorID(idIdioma)
+    response.status(idioma.status_code)
+    response.json(idioma)
+})
+
+app.set('/v1/locadora/idioma', cors(), async function (request, response){
+    let dadosBody = request.params.body
+
+    let contentType = request.headers['content-type']
+
+    let idioma = await controllerIdioma.criarIdioma(dadosBody, contentType)
+    response.status(idioma.status_code)
+    response.json(idioma)
+})
+
+
+app.delete('/v1/locadora/idioma/:id', cors(), async function(request, response){
+    let idIdioma = request.params.id
+
+    let idioma = await controllerIdioma.deletarIdioma(idIdioma)
+    response.status(idioma.status_code)
+    response.json(idioma)
 })
 
 app.listen(PORT, function(){

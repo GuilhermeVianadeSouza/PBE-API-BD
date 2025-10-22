@@ -41,3 +41,24 @@ Cabe às autoridades conter o pânico da população e tentar deter ou, em últi
 'https://youtu.be/IVONRrcn9TI?si=ChzvxILiCBSoejfu',
 'https://br.web.img3.acsta.net/c_310_420/medias/nmedia/18/87/80/17/19961691.jpg'
 )
+
+/***************************************************************************OUTRAS TABELAS*************************************************************************************************************/
+CREATE TABLE tbl_idioma(
+id_idioma INT PRIMARY KEY auto_increment NOT NULL,
+nome VARCHAR(100),
+sigla VARCHAR(10));
+
+INSERT INTO tbl_idioma(nome, sigla)
+VALUES ('Português', 'pt');
+
+INSERT INTO tbl_idioma(nome, sigla)
+VALUES ('Inglês', 'en-us');
+
+INSERT INTO tbl_idioma(nome, sigla)
+VALUES ('Inglês', 'en-gb');
+
+ALTER TABLE tbl_idioma MODIFY COLUMN nome VARCHAR(100) NOT NULL;
+ALTER TABLE tbl_idioma MODIFY COLUMN sigla VARCHAR(10) NOT NULL;
+
+select * from tbl_idioma;
+

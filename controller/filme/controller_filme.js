@@ -82,11 +82,20 @@ const inserirFilme = async function(filme, contentType){
                 let resultFilmes = await filmeDAO.setInsertMovies(filme)
 
                 if (resultFilmes){
-                    MESSAGES.DEFAULT_HEADER.status          =        MESSAGES.SUCESS_CREATED_ITEM.status
-                    MESSAGES.DEFAULT_HEADER.status_code     =        MESSAGES.SUCESS_CREATED_ITEM.status_code
-                    MESSAGES.DEFAULT_HEADER.message         =        MESSAGES.SUCESS_CREATED_ITEM.message
+                    //Chama a função para receber o ID gerado no banco de dados
+                    let lastID = await filmeDAO.getSelectLastID()
+                    if(lastID){
+                    //Adiciona o id no JSON com os dados do filme
+                        filme.id = lastID
+                        MESSAGES.DEFAULT_HEADER.status          =        MESSAGES.SUCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     =        MESSAGES.SUCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message         =        MESSAGES.SUCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items           =        filme 
 
-                    return MESSAGES.DEFAULT_HEADER //201
+                        return MESSAGES.DEFAULT_HEADER //201
+                    } else{
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500 MODEL
+                    }
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                 }
@@ -168,13 +177,13 @@ const excluirFilme = async function(id){
 
                             return MESSAGES.DEFAULT_HEADER //200
                         } else {
-                            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500 model
                         }
                     } else{
                         return validarID //A função buscarFilmeID poderá retornar(400 ou 404 ou 500)
                     }
     } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500        
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500 controller      
     } 
 }
 //validação dos dados de cadastro e atualização do filme. Função privada, apenas dessa controller
