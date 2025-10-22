@@ -61,13 +61,20 @@ const listarIdiomaPorID = async function(id){
 const criarIdioma = async function(idioma, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(String(contentType).toLocaleUpperCase == 'APPLICATION/JSON'){}
+        if(String(contentType).toLocaleUpperCase == 'APPLICATION/JSON'){
+            let validar = validarDadosIdioma(idioma)
+            if(!validar){
+                
+            }
+        } else{
+            return MESSAGES.ERROR_CONTENT_TYPE
+        }
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
 
-const deletarIdioma = async function(id, idioma, contentType){
+const deletarIdioma = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
         let verificacaoID = await listarIdiomaPorID(id)
