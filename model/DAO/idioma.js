@@ -14,7 +14,7 @@ const getSelectAllLanguage = async function(){
         let sql = `select * from tbl_idioma order by id_idioma desc`
 
         let result = await prisma.$queryRawUnsafe(sql)
-
+        console.log(result)
         if(Array.isArray(result))
             return result
         else{

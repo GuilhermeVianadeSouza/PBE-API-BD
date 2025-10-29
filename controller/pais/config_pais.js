@@ -15,11 +15,11 @@ const listarTodosOsPaises = async function(){
         let resultPaises = await paisDAO.getSelectAllCountry()
         if(resultPaises){
             if(resultPaises.length > 0){
-                MESSAGES.DEFAULT_MESSAGES.status            =           MESSAGES.SUCESS_REQUEST.status
-                MESSAGES.DEFAULT_MESSAGES.status_code       =           MESSAGES.SUCESS_REQUEST.status_code
-                MESSAGES.DEFAULT_MESSAGES.Items             =           resultPaises
+                MESSAGES.DEFAULT_HEADER.status            =           MESSAGES.SUCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code       =           MESSAGES.SUCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.items.pais             =           resultPaises
 
-                return MESSAGES.DEFAULT_MESSAGES //200
+                return MESSAGES.DEFAULT_HEADER //200
             } else {
                 return MESSAGES.ERROR_NOT_FOUND //404
             }

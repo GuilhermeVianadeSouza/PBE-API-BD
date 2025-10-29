@@ -28,7 +28,7 @@ app.use((request, response, next) =>{
 //import das controllers
 const controllerFilme               =           require('./controller/filme/controller_filme.js')
 const controllerIdioma              =           require('./controller/idioma/controller_idioma.js')
-const ControllerPais                =           require('./controller/pais/config_pais.js')
+const controllerPais                =           require('./controller/pais/config_pais.js')
 
 //EndPoinst para a rota de Filme
 
@@ -136,7 +136,7 @@ app.delete('/v1/locadora/idioma/:id', cors(), async function(request, response){
 })
 
 app.get('/v1/locadora/pais', cors(), async function (request, response){
-    let pais = await ControllerPais.listarTodosOsPaises()
+    let pais = await controllerPais.listarTodosOsPaises()
     response.status(pais.status_code)
     response.json(pais)
 })

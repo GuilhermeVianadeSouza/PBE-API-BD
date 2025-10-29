@@ -11,15 +11,15 @@ const prisma = new PrismaClient()
 
 const getSelectAllCountry = async function(){
     try {
-        let sql = `select * from tbl_pais order by id_pais desc;`
+        let sql = `select * from tbl_pais order by id_pais desc`
 
-        let result = await prisma.$executeRawUnsafe(sql)
-        console.log(result)
+        let result = await prisma.$queryRawUnsafe(sql)
 
-        if(Array.isArray(result))
+        if(Array.isArray(result)){
             return result
-        else
+        }else{
             return false
+        }
     } catch (error) {
         return false
     }
