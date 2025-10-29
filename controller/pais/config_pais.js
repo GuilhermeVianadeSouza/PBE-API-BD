@@ -31,6 +31,34 @@ const listarTodosOsPaises = async function(){
     }
 }
 
+const listarPaisporID = async function(id) {
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    try {
+        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0) {
+            let resultPaisbyId = await paisDAO.getSelectCountrybyID(id)
+            if(resultPaisbyId){
+                if(resultPaisbyId.length > 0){
+                    MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.items.pais      =       resultPaisbyId
+
+                    return MESSAGES.DEFAULT_HEADER
+                } else {
+                    return MESSAGES.ERROR_NOT_FOUND
+                }
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+            }
+        } else {
+            MESSAGES.ERROR_REQUIRED_FIELDS += `[ID NÃO VALIDO, INSIRA UM VALOR VÁLIDO]`
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
 module.exports = {
-    listarTodosOsPaises
+    listarTodosOsPaises,
+    listarPaisporID
 }

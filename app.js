@@ -141,6 +141,14 @@ app.get('/v1/locadora/pais', cors(), async function (request, response){
     response.json(pais)
 })
 
+app.get('/v1/locadora/pais/:id', cors(), async function (request, response){
+    let idPais = request.params.id
+
+    let pais = await controllerPais.listarPaisporID(idPais)
+    response.status(pais.status_code)
+    response.json(pais)
+})
+
 app.listen(PORT, function(){
     console.log("API aguardando request !!!")
 })

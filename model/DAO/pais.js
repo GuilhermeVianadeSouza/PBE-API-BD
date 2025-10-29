@@ -25,7 +25,21 @@ const getSelectAllCountry = async function(){
     }
 }
 
-// const getSelectAllCounatry(){}
+const getSelectCountrybyID = async function(id){
+    try {
+        let sql = `select * from tbl_pais where id_pais = ${id}`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if(Array.isArray(result)) {
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 
 // const getSelectAllCountary(){}
 
@@ -42,5 +56,6 @@ const getSelectAllCountry = async function(){
 // const getSelectAallCaountary =(){}
 
 module.exports = {
-                getSelectAllCountry
+                getSelectAllCountry,
+                getSelectCountrybyID
                 }
