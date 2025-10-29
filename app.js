@@ -103,12 +103,25 @@ app.get('/v1/locadora/idioma/:id', cors(), async function (request, response){
     response.json(idioma)
 })
 
-app.set('/v1/locadora/idioma', cors(), async function (request, response){
-    let dadosBody = request.params.body
-
+app.post('/v1/locadora/idioma', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
     let contentType = request.headers['content-type']
 
     let idioma = await controllerIdioma.criarIdioma(dadosBody, contentType)
+    console.log(idioma)
+    response.status(idioma.status_code)
+    response.json(idioma)
+})
+
+app.put('/v1/locadora/idioma/:id', cors(), bodyParserJSON, async function (request, response){
+    let idIdioma = request.params.id
+
+    let dadosBody = request.body
+
+    let contentType = request.headers['content-type']
+
+    let idioma = await controllerIdioma.atualizarIdioma(dadosBody, contentType, idIdioma)
     response.status(idioma.status_code)
     response.json(idioma)
 })

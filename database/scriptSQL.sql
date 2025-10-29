@@ -62,3 +62,11 @@ ALTER TABLE tbl_idioma MODIFY COLUMN sigla VARCHAR(10) NOT NULL;
 
 select * from tbl_idioma;
 
+
+CREATE TABLE tbl_pais(
+id_pais INT PRIMARY KEY auto_increment not null,
+nome VARCHAR(100) NOT NULL,
+sigla CHAR(2),
+nacionalidade_masc VARCHAR(100) NOT NULL,
+nacionalidade_fem VARCHAR(100) NOT NULL
+);

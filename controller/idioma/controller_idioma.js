@@ -5,14 +5,14 @@
  * Versão: 1.0
  ******************************************************************************************************************************/
 
-const generoDAO = require('../../model/DAO/idioma.js')
+const idiomaDAO = require('../../model/DAO/idioma.js')
 
 const DEFAULT_MESSAGES = require('../modulo/config_message.js')
 
 const listarIdiomas = async function() {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        let resultIdioma = await generoDAO.getSelectAllLanguage()
+        let resultIdioma = await idiomaDAO.getSelectAllLanguage()
         if (resultIdioma){
             if(resultIdioma.length > 0){
             MESSAGES.DEFAULT_HEADER.status              =       MESSAGES.SUCESS_REQUEST.status
@@ -35,7 +35,7 @@ const listarIdiomaPorID = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
         if(!isNaN(id) && id !='' && id !=undefined && id != null && id > 0){
-            let resultIdiomaID = await generoDAO.getSelectLanguageByID(Number(id))
+            let resultIdiomaID = await idiomaDAO.getSelectLanguageByID(Number(id))
             if(resultIdiomaID)
                 if(resultIdiomaID.length > 0){
                 MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_REQUEST.status
@@ -60,17 +60,78 @@ const listarIdiomaPorID = async function(id){
 
 const criarIdioma = async function(idioma, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
     try {
-        if(String(contentType).toLocaleUpperCase == 'APPLICATION/JSON'){
-            let validar = validarDadosIdioma(idioma)
+        if(String(contentType).toLocaleUpperCase() == 'APPLICATION/JSON'){
+
+            let validar = await validarDadosIdioma(idioma)
+
             if(!validar){
-                
+                //processamento da verdadeira
+                let resultIdioma = await idiomaDAO.setInsertLanguage(idioma)
+
+                if (resultIdioma){
+                    let lastID = await idiomaDAO.getSelectLastLanguageId()
+                    if(lastID){
+                        idioma.id_idioma = lastID 
+                        MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message         =       MESSAGES.SUCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items.idioma    =       idioma
+
+                        return MESSAGES.DEFAULT_HEADER //201
+                    } else{
+                        return MESSAGES.ERROR_REQUIRED_FIELDS //400
+                    }
+                } else {
+                    return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                }
+            } else {
+                return validarDadosIdioma
             }
         } else{
-            return MESSAGES.ERROR_CONTENT_TYPE
+            return MESSAGES.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
-        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER//500
+    }
+}
+
+const atualizarIdioma = async function(idioma, contentType, id){
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    try {
+        if(String(contentType).toLocaleUpperCase() == 'APPLICATION/JSON')
+            {
+            let validar = await validarDadosIdioma(idioma)
+            if(!validar) {
+                let confirmarID = await listarIdiomaPorID(id)
+
+                if (confirmarID.status_code == 200){
+                    idioma.id_idioma = Number(id)
+
+                    let atualizarDados = await idiomaDAO.setUpdateLanguage(idioma)
+                    console.log(atualizarDados)
+                    if(atualizarDados) {
+
+                        MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.items.idioma    =       idioma
+                        return MESSAGES.DEFAULT_HEADER
+                    } else{
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+                    }
+                } else{
+                    return listarIdiomaPorID
+                }
+            } else{
+                return validarDadosIdioma
+            }
+        } else {
+            return MESSAGES.ERROR_CONTENT_TYPE 
+        }
+    } catch (error) {
+        console.log(error)
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
 
@@ -86,6 +147,7 @@ const deletarIdioma = async function(id){
                 MESSAGES.DEFAULT_HEADER.status          =           MESSAGES.SUCESS_DELETED_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code     =           MESSAGES.SUCESS_DELETED_ITEM.status_code
                 MESSAGES.DEFAULT_HEADER.message         =           MESSAGES.SUCESS_DELETED_ITEM.message
+                console.log(MESSAGES.DEFAULT_HEADER)
 
                 return MESSAGES.DEFAULT_HEADER
             } else {
@@ -117,6 +179,6 @@ module.exports = {
     listarIdiomas,
     listarIdiomaPorID,
     criarIdioma,
-
+    atualizarIdioma,
     deletarIdioma
 }
