@@ -58,6 +58,26 @@ const listarPaisporID = async function(id) {
     }
 }
 
+const deletarPais = async function(id) {
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    try {
+        let verificacaoID = await listarPaisporID(id)
+        if (verificacaoID.status_code == 200){
+            if(verificacaoID) {
+                MESSAGES.DEFAULT_HEADER.status      =       MESSAGES.SUCESS_DELETED_ITEM.status
+                MESSAGES.DEFAULT_HEADER.status_code =       MESSAGES.SUCESS_DELETED_ITEM.status_code
+                MESSAGES.DEFAULT_HEADER.items.messages  =   MESSAGES.SUCESS_DELETED_ITEM.messages
+
+                return MESSAGES.DEFAULT_HEADER
+            }
+        } else {
+            return verificacaoID
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
 module.exports = {
     listarTodosOsPaises,
     listarPaisporID

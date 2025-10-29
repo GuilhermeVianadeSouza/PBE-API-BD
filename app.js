@@ -149,6 +149,12 @@ app.get('/v1/locadora/pais/:id', cors(), async function (request, response){
     response.json(pais)
 })
 
+app.delete('/v1/locadora/pais/:id', cors(), async function(request, response){
+    let idPais = request.params.id
+
+    let pais = await controllerPais.
+})
+
 app.listen(PORT, function(){
     console.log("API aguardando request !!!")
 })

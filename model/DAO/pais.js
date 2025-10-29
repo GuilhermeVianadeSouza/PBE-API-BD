@@ -53,7 +53,21 @@ const getSelectCountrybyID = async function(id){
 
 // const getSelectaAllCountry=(){}
 
-// const getSelectAallCaountary =(){}
+const deleteCountry = async function(id){
+    try {
+        let sql = `delete from tbl_pais where id_pais = ${id}`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if(result){
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 
 module.exports = {
                 getSelectAllCountry,
