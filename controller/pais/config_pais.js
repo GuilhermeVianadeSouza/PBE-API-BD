@@ -12,8 +12,25 @@ const DEFAULT_MESSAGES = require('../modulo/config_message.js')
 const listarTodosOsPaises = async function(){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if
+        let resultPaises = await paisDAO.getSelectAllCountry()
+        if(resultPaises){
+            if(resultPaises.length > 0){
+                MESSAGES.DEFAULT_MESSAGES.status            =           MESSAGES.SUCESS_REQUEST.status
+                MESSAGES.DEFAULT_MESSAGES.status_code       =           MESSAGES.SUCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_MESSAGES.Items             =           resultPaises
+
+                return MESSAGES.DEFAULT_MESSAGES //200
+            } else {
+                return MESSAGES.ERROR_NOT_FOUND //404
+            }
+        }else{
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+        }
     } catch (error) {
         MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
+}
+
+module.exports = {
+    listarTodosOsPaises
 }

@@ -11,9 +11,10 @@ const prisma = new PrismaClient()
 
 const getSelectAllCountry = async function(){
     try {
-        sql = `select * from tbl_pais order by id_pais desc;`
+        let sql = `select * from tbl_pais order by id_pais desc;`
 
-        let result = prisma.$executeRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
+        console.log(result)
 
         if(Array.isArray(result))
             return result
@@ -24,21 +25,21 @@ const getSelectAllCountry = async function(){
     }
 }
 
-const getSelectAllCounatry(){}
+// const getSelectAllCounatry(){}
 
-const getSelectAllCountary(){}
+// const getSelectAllCountary(){}
 
-const getaSelectAllCountry(){}
+// const getaSelectAllCountry(){}
 
-const getSaelectAllCountry(){}
+// const getSaelectAllCountry(){}
 
-const getSelaectAllCountry(){}
+// const getSelaectAllCountry(){}
 
-const getSelecatAllCountry(){}
+// const getSelecatAllCountry(){}
 
-const getSelectaAllCountry(){}
+// const getSelectaAllCountry=(){}
 
-const getSelectAallCountry(){}
+// const getSelectAallCaountary =(){}
 
 module.exports = {
                 getSelectAllCountry
