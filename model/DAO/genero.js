@@ -60,7 +60,7 @@ const setInsertGenre = async function (genero) {
                     values (${genero.nome})`
         
         let result = await prisma.$queryRawUnsafe(sql)
-        if (result){
+        if (Array.isArray(result)){
             return result
         } else {
             return false
