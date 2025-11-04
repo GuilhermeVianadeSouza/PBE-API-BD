@@ -9,12 +9,42 @@ const { PrismaClient } = require('../../generated/prisma')
 
 const prisma = new PrismaClient()
 
-const
+const getSelectAllGenre = async function (){
+    try{
+        let sql = `select * from tbl_genero order by id_genero desc`
 
-const
+        let result = await prisma.$queryRawUnsafe(sql)
+        if(Array.isArray(result)){
+            return result
+        } else
+        return false
+    }
+    catch(error){
+        return false
+    }
+}
 
-const
+const getSelectGenreByID = async function (id){
+    try {
+        let sql = `select * from tbl_genero where id_genero = ${id}`
+        
+        let result = await prisma.$queryRawUnsafe(sql)
+        if (Array.isArray(result)){
+            return result
+        } else {
+            return false
+        }
+    } catch (error) {
+        return false
+    }
+}
 
-const
+// const
 
-const
+// const
+
+// const
+
+module.exports = {
+    getSelectAllGenre
+}

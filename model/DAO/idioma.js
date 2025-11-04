@@ -86,7 +86,6 @@ const setUpdateLanguage = async function (idioma) {
 
         let result = await prisma.$queryRawUnsafe(sql)
         if (result){
-            console.log(result)
             return result
         }else{
             return false

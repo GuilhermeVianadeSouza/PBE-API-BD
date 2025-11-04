@@ -110,7 +110,6 @@ const atualizarIdioma = async function(idioma, contentType, id){
                     idioma.id_idioma = Number(id)
 
                     let atualizarDados = await idiomaDAO.setUpdateLanguage(idioma)
-                    console.log(atualizarDados)
                     if(atualizarDados) {
 
                         MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_UPDATED_ITEM.status
@@ -142,12 +141,11 @@ const deletarIdioma = async function(id){
         if (verificacaoID.status_code == 200){
             id = Number(id)
 
-            let excluirIdioma = await generoDAO.deleteLanguageByID(id)
+            let excluirIdioma = await idiomaDAO.deleteLanguageByID(id)
             if(excluirIdioma){
                 MESSAGES.DEFAULT_HEADER.status          =           MESSAGES.SUCESS_DELETED_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code     =           MESSAGES.SUCESS_DELETED_ITEM.status_code
                 MESSAGES.DEFAULT_HEADER.message         =           MESSAGES.SUCESS_DELETED_ITEM.message
-                console.log(MESSAGES.DEFAULT_HEADER)
 
                 return MESSAGES.DEFAULT_HEADER
             } else {
@@ -157,6 +155,7 @@ const deletarIdioma = async function(id){
             return verificacaoID
         }
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }

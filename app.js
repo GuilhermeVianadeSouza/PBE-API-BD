@@ -28,7 +28,8 @@ app.use((request, response, next) =>{
 //import das controllers
 const controllerFilme               =           require('./controller/filme/controller_filme.js')
 const controllerIdioma              =           require('./controller/idioma/controller_idioma.js')
-const controllerPais                =           require('./controller/pais/config_pais.js')
+const controllerPais                =           require('./controller/pais/controller_pais.js')
+const controllerGenero              =           require('./controller/genero/controller_genero..js')
 
 //EndPoinst para a rota de Filme
 
@@ -149,10 +150,39 @@ app.get('/v1/locadora/pais/:id', cors(), async function (request, response){
     response.json(pais)
 })
 
+app.post('/v1/locadora/pais', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+
+    let contentType = request.headers['content-type']
+
+    let pais = await controllerPais.criarPais(dadosBody, contentType)
+    response.status(pais.status_code)
+    response.json(pais)
+
+})
+
+app.put('/v1/locadora/pais/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idPais = request.params.id
+
+    let pais = await controllerPais.atualizarPais(dadosBody, contentType, idPais)
+    response.status(pais.status_code)
+    response.json(pais)
+})
+
 app.delete('/v1/locadora/pais/:id', cors(), async function(request, response){
     let idPais = request.params.id
 
-    let pais = await controllerPais.
+    let pais = await controllerPais.deletarPais(idPais)
+    response.status(pais.status_code)
+    response.json(pais)
+})
+
+app.get('/v1/locadora/genero', cors(), async function (request, response){
+    let genero = await controllerGenero.listarTodosOsGeneros()
+    response.status(genero)
+    response.json(genero)
 })
 
 app.listen(PORT, function(){
