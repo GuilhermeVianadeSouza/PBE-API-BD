@@ -181,7 +181,43 @@ app.delete('/v1/locadora/pais/:id', cors(), async function(request, response){
 
 app.get('/v1/locadora/genero', cors(), async function (request, response){
     let genero = await controllerGenero.listarTodosOsGeneros()
-    response.status(genero)
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.get('/v1/locadora/genero/:id', cors(), async function(request, response){
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.listarGeneroPorID(idGenero)
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.post('/v1/locadora/genero/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let genero = await controllerGenero.inserindoGenero(dadosBody, contentType)
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.put('/v1/locadora/genero/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero
+    response.status(genero.status_code)
+    response.json(genero)
+})
+
+app.delete('/v1/locadora/genero/:id', cors(), async function(request, response){
+    let idGenero = request.params.id
+
+    let genero = await controllerGenero.deletarGenero(idGenero)
+    response.status(genero.status_code)
     response.json(genero)
 })
 
