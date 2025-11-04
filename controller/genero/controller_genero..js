@@ -68,6 +68,7 @@ const listarGeneroPorID = async function(id){
                 let resultGenre = generoDAO.setInsertGenre(genero)
                 if (resultGenre) {
                     let ultimoID = generoDAO.getSelectLastGenreByID()
+                    console.log(ultimoID)
                     if(ultimoID) {
                         genero.id_genero = ultimoID
                         MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_CREATED_ITEM.status

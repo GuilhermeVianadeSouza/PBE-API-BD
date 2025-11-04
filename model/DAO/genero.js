@@ -45,7 +45,7 @@ const getSelectLastGenreByID = async function(id) {
 
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result)){
-            return result
+            return Number(result[0].id_genero)
         } else {
             return false
         }
