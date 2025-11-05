@@ -208,7 +208,7 @@ app.put('/v1/locadora/genero/:id', cors(), bodyParserJSON, async function (reque
     let contentType = request.headers['content-type']
     let idGenero = request.params.id
 
-    let genero = await controllerGenero
+    let genero = await controllerGenero.atualizarGenero(dadosBody, contentType, idGenero)
     response.status(genero.status_code)
     response.json(genero)
 })

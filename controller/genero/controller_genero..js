@@ -1,12 +1,11 @@
 /******************************************************************************************************************************
  * Objetivo: Arquivo Responsável pela manipulação de dados entre o APP e a MODEL para o CRUD de filme;
- * Data: 04/11/2025;
+ * Data: 05/11/2025;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0
  ******************************************************************************************************************************/
 
 const generoDAO = require('../../model/DAO/genero.js')
-const { criarIdioma } = require('../idioma/controller_idioma.js')
 
 const DEFAULT_MESSAGES = require('../modulo/config_message.js')
 
@@ -65,10 +64,9 @@ const listarGeneroPorID = async function(id){
         if(String(contentType).toLocaleUpperCase() == 'APPLICATION/JSON'){
             let validacao = await validarDadosGenero(genero)
             if(!validacao) {
-                let resultGenre = generoDAO.setInsertGenre(genero)
+                let resultGenre = await generoDAO.setInsertGenre(genero)
                 if (resultGenre) {
-                    let ultimoID = generoDAO.getSelectLastGenreByID()
-                    console.log(ultimoID)
+                    let ultimoID = await generoDAO.getSelectLastGenreByID()
                     if(ultimoID) {
                         genero.id_genero = ultimoID
                         MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_CREATED_ITEM.status
@@ -97,7 +95,30 @@ const atualizarGenero = async function (genero, contentType, id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
         if(String(contentType).toLocaleUpperCase() == 'APPLICATION/JSON'){
-            let validacao = a
+            let validacao = await validarDadosGenero(genero)
+            if(!validacao){
+                let confirmarId = await listarGeneroPorID(id)
+                if(confirmarId.status_code == 200){
+                    genero.id_genero = Number(id)
+
+                    let atualizarDados = await generoDAO.setUpdateGenre(genero)
+                    if(atualizarDados){
+                        
+                        MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.items.genero    =       genero
+                        return MESSAGES.DEFAULT_HEADER
+                    } else{
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+                    }
+                } else {
+                    return listarGeneroPorID
+                }
+            } else {
+                return validarDadosGenero
+            }
+        } else{
+            return MESSAGES.ERROR_CONTENT_TYPE 
         }
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
@@ -140,5 +161,6 @@ module.exports = {
     listarTodosOsGeneros,
     listarGeneroPorID,
     inserindoGenero,
+    atualizarGenero,
     deletarGenero
 }

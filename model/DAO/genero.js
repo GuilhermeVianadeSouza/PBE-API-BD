@@ -39,7 +39,7 @@ const getSelectGenreByID = async function (id){
     }
 }
 
-const getSelectLastGenreByID = async function(id) {
+const getSelectLastGenreByID = async function() {
     try {
         let sql = `select id_genero from tbl_genero order by id_genero desc limit 1`
 
@@ -57,7 +57,7 @@ const getSelectLastGenreByID = async function(id) {
 const setInsertGenre = async function (genero) {
     try {
         let sql = `insert into tbl_genero (nome)
-                    values (${genero.nome})`
+                    values ('${genero.nome}')`
         
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result)){
@@ -72,10 +72,12 @@ const setInsertGenre = async function (genero) {
 
 const setUpdateGenre = async function (genero) {
     try {
-        let sql = `update into tbl_genero set nome = '${genero.nome}'`
+        let sql = `update tbl_genero set nome = '${genero.nome}'
+        
+        where id_genero = ${genero.id_genero}`
 
         let result = await prisma.$queryRawUnsafe(sql)
-        if (Array.isArray(result)){
+        if (result){
             return result
         } else {
             return false
