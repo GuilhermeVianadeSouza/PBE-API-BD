@@ -119,18 +119,20 @@ const listarFilmesIdGenero = async function(idGenero){
         if(String(contentType).toLocaleUpperCase() == 'APPLICATION/JSON'){
             let validacao = await validarDadosFilmeGenero(filmeGenero)
             if(!validacao) {
-                let resultFilmeGenre = await filmeGeneroDAO.setInsertMoviesGenres(genero)
+                let resultFilmeGenre = await filmeGeneroDAO.setInsertMoviesGenres(filmeGenero)
+
                 if (resultFilmeGenre) {
                     let ultimoID = await filmeGeneroDAO.getSelectLastGenreByID()
+
                     if(ultimoID) {
                         filmeGenero.id = ultimoID
                         MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.items    =       filmeGenero
-    
+
                         return MESSAGES.DEFAULT_HEADER
                     } else {
-                        return MESSAGES.ERROR_REQUIRED_FIELDS
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
                     }
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
