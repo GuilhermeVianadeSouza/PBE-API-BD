@@ -70,3 +70,11 @@ sigla CHAR(2),
 nacionalidade_masc VARCHAR(100) NOT NULL,
 nacionalidade_fem VARCHAR(100) NOT NULL
 );
+
+CREATE TABLE tbl_diretor(
+    id_diretor INT PRIMARY KEY auto_increment not null,
+    nome VARCHAR(255) NOT NULL,
+    nome_artistico VARCHAR(255) NULL,
+    pais_origem VARCHAR(100),
+    nacionalidade_
+)

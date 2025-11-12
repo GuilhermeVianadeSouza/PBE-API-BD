@@ -4,6 +4,7 @@
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0 (CRUD básico do filme, sem as relações com outras tabelas)
  * Versão: 1.1 (CRUD do filme com relacionamento com a tabela genero)
+ * Versão: 1.2 (CRUD do filme com relacionamento com a tabela diretor)
  ******************************************************************************************************************************/
 
 //Import da model do DAO do filme;
@@ -214,7 +215,6 @@ const atualizarFilme = async function(filme, id, contentType){
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500        
     } 
 }
@@ -235,7 +235,7 @@ const excluirFilme = async function(id){
                         }
 
                         let resultFilmes = await filmeDAO.setDeleteMovies(id)
-                        
+
                         if (resultFilmes){
                             MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_DELETED_ITEM.status
                             MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_DELETED_ITEM.status_code
