@@ -200,12 +200,31 @@ const excluirFilmeGenero = async function (id) {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
             }
         } else {
-            listarGeneroPorID
+            return listarGeneroPorID
          }
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }
+
+const excluirFilmeGeneroPorIdFilme = async function (id){
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    try {
+            let resultFilmesGeneros = await filmeGeneroDAO.setDeleteMoviesGenresByIdMovies(id)
+            if(resultFilmesGeneros === true || resultFilmesGeneros === false){
+                MESSAGES.DEFAULT_HEADER.status              =       MESSAGES.SUCESS_DELETED_ITEM.status
+                MESSAGES.DEFAULT_HEADER.status_code         =       MESSAGES.SUCESS_DELETED_ITEM.status_code
+                MESSAGES.DEFAULT_HEADER.message             =       MESSAGES.SUCESS_DELETED_ITEM.message
+
+                return MESSAGES.DEFAULT_HEADER
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
+            }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
+    }
+}
+
 
 const validarDadosFilmeGenero = async function (filmeGenero) {
     if(filmeGenero.id_filme <= 0 ||isNaN(filmeGenero.id_filme) || filmeGenero.id_filme == "" || filmeGenero.id_filme == null || filmeGenero.id_filme == undefined){
@@ -226,5 +245,6 @@ module.exports = {
     listarFilmesIdGenero,
     inserirFilmeGenero,
     atualizarFilmeGenero,
-    excluirFilmeGenero
+    excluirFilmeGenero,
+    excluirFilmeGeneroPorIdFilme
 }
