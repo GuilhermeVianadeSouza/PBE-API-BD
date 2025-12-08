@@ -30,6 +30,7 @@ const controllerFilme               =           require('./controller/filme/cont
 const controllerIdioma              =           require('./controller/idioma/controller_idioma.js')
 const controllerPais                =           require('./controller/pais/controller_pais.js')
 const controllerGenero              =           require('./controller/genero/controller_genero..js')
+const controllerPersonagem          =           require('./controller/personagem/controller_personagem.js')
 
 //EndPoinst para a rota de Filme
 
@@ -221,6 +222,18 @@ app.delete('/v1/locadora/genero/:id', cors(), async function(request, response){
     response.json(genero)
 })
 
+app.get('/v1/locadora/personagem', cors(), async function(request, response){
+    let personagem = await controllerPersonagem.listarTodosOsPersonagem()
+    response.status(personagem.status_code)
+    response.json(personagem)
+})
+
+app.get('/v1/locadora/personagem/:id', cors(), async function(request, response){
+    let idPersonagem = request.params.id
+    let personagem = await controllerPersonagem.listarPersonagemPorId(idPersonagem)
+    response.status(personagem.status_code)
+    response.json(personagem)
+})
 app.listen(PORT, function(){
     console.log("API aguardando request !!!")
 })
