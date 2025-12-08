@@ -69,7 +69,7 @@ const criarPersonagem = async function (personagem, contentType){
                 if(resultPersonagem){
                     let lastID = await personagemDAO.getSelectLastCharacterId()
                     if(lastID){
-                        personagem.id_personagen = lastID
+                        personagem.id_personagem = lastID
                         MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_CREATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code     =       MESSAGES.SUCESS_CREATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.items.personagem      =       personagem

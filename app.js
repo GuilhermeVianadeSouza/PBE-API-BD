@@ -31,6 +31,7 @@ const controllerIdioma              =           require('./controller/idioma/con
 const controllerPais                =           require('./controller/pais/controller_pais.js')
 const controllerGenero              =           require('./controller/genero/controller_genero..js')
 const controllerPersonagem          =           require('./controller/personagem/controller_personagem.js')
+const controllerAtor                =           require('./controller/ator/controller_ator.js')
 
 //EndPoinst para a rota de Filme
 
@@ -261,6 +262,47 @@ app.delete('/v1/locadora/personagem/:id', cors(), async function(request, respon
     let personagem = await controllerPersonagem.deletarPersonagem(idPersonagem)
     response.status(personagem.status_code)
     response.json(personagem)
+})
+
+app.get('/v1/locadora/ator', cors(), async function(request, response){
+    let ator = await controllerAtor.listarTodosOsAtores()
+    response.status(ator.status_code)
+    response.json(ator)
+})
+
+app.get('/v1/locadora/ator/:id', cors(), async function(request, response){
+    let idAtor = request.params.id
+    let ator = await controllerAtor.listarAtorPorId(idAtor)
+    response.status(ator.status_code)
+    response.json(ator)
+})
+
+app.post('/v1/locadora/ator/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let ator = await controllerAtor.criarAtor(dadosBody, contentType)
+    response.status(ator.status_code)
+    response.json(ator)
+})
+
+app.put('/v1/locadora/ator/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idAtor = request.params.id
+
+    let ator = await controllerAtor.atualizarAtor(dadosBody, contentType, idAtor)
+    response.status(ator.status_code)
+    response.json(ator)
+})
+
+app.delete('/v1/locadora/ator/:id', cors(), async function(request, response){
+    let idAtor = request.params.id
+
+    let ator = await controllerAtor.deletarAtor(idAtor)
+    response.status(ator.status_code)
+    response.json(ator)
 })
 
 app.listen(PORT, function(){
