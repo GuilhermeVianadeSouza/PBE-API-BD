@@ -1,6 +1,6 @@
 /******************************************************************************************************************************
  * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente a tabela tbl_diretor;
- * Data: 08/11/2025 - Data Inicio;
+ * Data: 08/12/2025 - Data Inicio;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0
  ******************************************************************************************************************************/
@@ -16,9 +16,9 @@ function validarData(data) {
     return `'${data}'`;
 }
 
-const getSelectAllDirector = async function(){
+const getSelectAllVoiceActor = async function(){
     try {
-        const sql = `SELECT * FROM tbl_diretor ORDER BY id_diretor DESC`
+        const sql = `SELECT * FROM tbl_dublador ORDER BY id_dublador DESC`
 
         let result = await prisma.$queryRawUnsafe(sql)
         if(Array.isArray(result))
@@ -30,9 +30,9 @@ const getSelectAllDirector = async function(){
     }
 }
 
-const getSelectDirectorById = async function(id){
+const getSelectVoiceActorById = async function(id){
     try {
-        const sql = `SELECT * FROM tbl_diretor WHERE id_diretor = ${id}`
+        const sql = `SELECT * FROM tbl_dublador WHERE id_dublador = ${id}`
 
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -44,13 +44,13 @@ const getSelectDirectorById = async function(id){
     }
 }
 
-const getSelectLastDirectorId = async function(){
+const getSelectLastVoiceActorId = async function(){
     try {
-        let sql = `select id_diretor from tbl_diretor order by id_diretor desc limit 1`
+        let sql = `select id_dublador from tbl_dublador order by id_dublador desc limit 1`
 
         let result = await prisma.$queryRawUnsafe(sql)
         if(Array.isArray(result)){
-            return Number(result[0].id_diretor)
+            return Number(result[0].id_dublador)
         } else {
             return false
         }
@@ -60,16 +60,17 @@ const getSelectLastDirectorId = async function(){
     }
 }
 
-const setInsertDirector = async function (diretor) {
+const setInsertVoiceActor = async function (dublador) {
     try{
-        let sql = `INSERT INTO tbl_diretor(nome,  data_nascimento, data_falecimento,
-                    biografia, foto_url, id_pais)
-                    VALUES ('${diretor.nome}',
-                            ${validarData(diretor.data_nascimento)},
-                            ${validarData(diretor.data_falecimento)},
-                            '${diretor.biografia}',
-                            '${diretor.foto_url}',
-                            '${diretor.id_pais}'
+        let sql = `INSERT INTO tbl_dublador(nome,  data_nascimento, data_falecimento,
+                    biografia, estudio_principal, ativo, id_pais)
+                    VALUES ('${dublador.nome}',
+                            ${validarData(dublador.data_nascimento)},
+                            ${validarData(dublador.data_falecimento)},
+                            '${dublador.biografia}',
+                            '${dublador.estudio_principal}',
+                            ${dublador.ativo},
+                            '${dublador.id_pais}'
                             )`
 
         let result = await prisma.$executeRawUnsafe(sql)
@@ -85,17 +86,18 @@ const setInsertDirector = async function (diretor) {
 
 
 
-const setUpdateDirector = async function (diretor) {
+const setUpdateVoiceActor = async function (dublador) {
     try {
-        let sql = `update tbl_diretor set
-                    nome = '${diretor.nome}',
-                    data_nascimento = ${validarData(diretor.data_nascimento)},
-                    data_falecimento = ${validarData(diretor.data_falecimento)},
-                    biografia = '${diretor.biografia}',
-                    foto_url = '${diretor.foto_url}',
-                    id_pais = '${diretor.id_pais}'
+        let sql = `update tbl_dublador set
+                    nome = '${dublador.nome}',
+                    data_nascimento = ${validarData(dublador.data_nascimento)},
+                    data_falecimento = ${validarData(dublador.data_falecimento)},
+                    biografia = '${dublador.biografia}',
+                    estudio_principal = '${dublador.estudio_principal}',
+                    ativo = ${dublador.ativo},
+                    id_pais = '${dublador.id_pais}'
                     
-                    where id_diretor = ${diretor.id_diretor};`
+                    where id_dublador = ${dublador.id_dublador};`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result){
@@ -108,9 +110,9 @@ const setUpdateDirector = async function (diretor) {
     }
 }
 
-const deleteDirector = async function(id){
+const deleteVoiceActor = async function(id){
     try {
-        let sql = `delete from tbl_diretor where id_diretor = ${id}`
+        let sql = `delete from tbl_dublador where id_dublador = ${id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
 
@@ -125,10 +127,10 @@ const deleteDirector = async function(id){
 }
 
 module.exports = {
-    getSelectAllDirector,
-    getSelectDirectorById,
-    getSelectLastDirectorId,
-    setInsertDirector,
-    setUpdateDirector,
-    deleteDirector
+    getSelectAllVoiceActor,
+    getSelectVoiceActorById,
+    getSelectLastVoiceActorId,
+    setInsertVoiceActor,
+    setUpdateVoiceActor,
+    deleteVoiceActor
 }

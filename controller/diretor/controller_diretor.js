@@ -12,7 +12,7 @@ const DEFAULT_MESSAGES = require('../modulo/config_message.js')
 const listarTodosOsDiretores = async function(){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        let resultDiretor = await diretorDAO.getSelectAlldirector()
+        let resultDiretor = await diretorDAO.getSelectAllDirector()
                 if(resultDiretor){
                     if(resultDiretor.length > 0){
                         MESSAGES.DEFAULT_HEADER.status            =           MESSAGES.SUCESS_REQUEST.status
@@ -68,7 +68,6 @@ const criarDiretor = async function (diretor, contentType){
                 let resultDiretor = await diretorDAO.setInsertDirector(diretor)
                 if(resultDiretor){
                     let lastID = await diretorDAO.getSelectLastDirectorId()
-                    console.log(lastID)
                     if(lastID){
                         diretor.id_diretor = lastID
                         MESSAGES.DEFAULT_HEADER.status          =       MESSAGES.SUCESS_CREATED_ITEM.status

@@ -33,6 +33,7 @@ const controllerGenero              =           require('./controller/genero/con
 const controllerPersonagem          =           require('./controller/personagem/controller_personagem.js')
 const controllerAtor                =           require('./controller/ator/controller_ator.js')
 const controllerDiretor             =           require('./controller/diretor/controller_diretor.js')
+const controllerDublador            =           require('./controller/dublador/controller_dublador.js')
 
 //EndPoinst para a rota de Filme
 
@@ -345,6 +346,47 @@ app.delete('/v1/locadora/diretor/:id', cors(), async function(request, response)
     let diretor = await controllerDiretor.deletarDiretor(idDiretor)
     response.status(diretor.status_code)
     response.json(diretor)
+})
+
+app.get('/v1/locadora/dublador', cors(), async function(request, response){
+    let dublador = await controllerDublador.listarTodosOsDubladores()
+    response.status(dublador.status_code)
+    response.json(dublador)
+})
+
+app.get('/v1/locadora/dublador/:id', cors(), async function(request, response){
+    let idDublador = request.params.id
+    let dublador = await controllerDublador.listarDubladorPorId(idDublador)
+    response.status(dublador.status_code)
+    response.json(dublador)
+})
+
+app.post('/v1/locadora/dublador/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let dublador = await controllerDublador.criarDublador(dadosBody, contentType)
+    response.status(dublador.status_code)
+    response.json(dublador)
+})
+
+app.put('/v1/locadora/dublador/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idDublador = request.params.id
+
+    let dublador = await controllerDublador.atualizarDublador(dadosBody, contentType, idDublador)
+    response.status(dublador.status_code)
+    response.json(dublador)
+})
+
+app.delete('/v1/locadora/dublador/:id', cors(), async function(request, response){
+    let idDublador = request.params.id
+
+    let dublador = await controllerDublador.deletarDublador(idDublador)
+    response.status(dublador.status_code)
+    response.json(dublador)
 })
 
 app.listen(PORT, function(){
