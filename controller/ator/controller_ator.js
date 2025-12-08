@@ -191,8 +191,8 @@ const validarDadosAtor = async function(ator){
                 return MESSAGES.ERROR_REQUIRED_FIELDS;
             }
         }
-        else if(ator.data_nascimento) {
-            const dataTeste = new Date(ator.data_nascimento);
+        else if(ator.data_falecimento) {
+            const dataTeste = new Date(ator.data_falecimento);
             if (isNaN(dataTeste.getTime())) {
                 MESSAGES.ERROR_REQUIRED_FIELDS.message = 'Data inválida.';
                 return MESSAGES.ERROR_REQUIRED_FIELDS;

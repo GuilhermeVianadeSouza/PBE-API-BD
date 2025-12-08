@@ -32,6 +32,7 @@ const controllerPais                =           require('./controller/pais/contr
 const controllerGenero              =           require('./controller/genero/controller_genero..js')
 const controllerPersonagem          =           require('./controller/personagem/controller_personagem.js')
 const controllerAtor                =           require('./controller/ator/controller_ator.js')
+const controllerDiretor             =           require('./controller/diretor/controller_diretor.js')
 
 //EndPoinst para a rota de Filme
 
@@ -303,6 +304,47 @@ app.delete('/v1/locadora/ator/:id', cors(), async function(request, response){
     let ator = await controllerAtor.deletarAtor(idAtor)
     response.status(ator.status_code)
     response.json(ator)
+})
+
+app.get('/v1/locadora/diretor', cors(), async function(request, response){
+    let diretor = await controllerDiretor.listarTodosOsDiretores()
+    response.status(diretor.status_code)
+    response.json(diretor)
+})
+
+app.get('/v1/locadora/diretor/:id', cors(), async function(request, response){
+    let idDiretor = request.params.id
+    let diretor = await controllerDiretor.listarDiretorPorId(idDiretor)
+    response.status(diretor.status_code)
+    response.json(diretor)
+})
+
+app.post('/v1/locadora/diretor/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let diretor = await controllerDiretor.criarDiretor(dadosBody, contentType)
+    response.status(diretor.status_code)
+    response.json(diretor)
+})
+
+app.put('/v1/locadora/diretor/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idDiretor = request.params.id
+
+    let diretor = await controllerDiretor.atualizarDiretor(dadosBody, contentType, idDiretor)
+    response.status(diretor.status_code)
+    response.json(diretor)
+})
+
+app.delete('/v1/locadora/diretor/:id', cors(), async function(request, response){
+    let idDiretor = request.params.id
+
+    let diretor = await controllerDiretor.deletarDiretor(idDiretor)
+    response.status(diretor.status_code)
+    response.json(diretor)
 })
 
 app.listen(PORT, function(){
