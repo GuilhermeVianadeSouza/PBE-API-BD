@@ -234,6 +234,35 @@ app.get('/v1/locadora/personagem/:id', cors(), async function(request, response)
     response.status(personagem.status_code)
     response.json(personagem)
 })
+
+app.post('/v1/locadora/personagem/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let personagem = await controllerPersonagem.criarPersonagem(dadosBody, contentType)
+    response.status(personagem.status_code)
+    response.json(personagem)
+})
+
+app.put('/v1/locadora/personagem/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idPersonagem = request.params.id
+
+    let personagem = await controllerPersonagem.atualizarPersonagem(dadosBody, contentType, idPersonagem)
+    response.status(personagem.status_code)
+    response.json(personagem)
+})
+
+app.delete('/v1/locadora/personagem/:id', cors(), async function(request, response){
+    let idPersonagem = request.params.id
+
+    let personagem = await controllerPersonagem.deletarPersonagem(idPersonagem)
+    response.status(personagem.status_code)
+    response.json(personagem)
+})
+
 app.listen(PORT, function(){
     console.log("API aguardando request !!!")
 })

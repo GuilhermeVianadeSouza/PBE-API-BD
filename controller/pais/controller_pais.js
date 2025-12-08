@@ -157,14 +157,19 @@ const deletarPais = async function(id) {
 
 const validarDadosPais = async function(pais){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-    if(pais.nome == '' || pais.nome == undefined || pais.nome == null || pais.nome.length > 100)
+    if(pais.nome == '' || pais.nome == undefined || pais.nome == null || pais.nome.length > 100){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira um nome valido.]'
-     else if(pais.sigla == '' || pais.sigla == undefined || pais.sigla == null || pais.sigla.length > 2)
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    }else if(pais.sigla == '' || pais.sigla == undefined || pais.sigla == null || pais.sigla.length > 2){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira uma sigla valida]'
-    else if(pais.nacionalidade_masc == '' || pais.nacionalidade_masc == undefined || pais.nacionalidade_masc == null || pais.nacionalidade_masc.length > 100)
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    } else if(pais.nacionalidade_masc == '' || pais.nacionalidade_masc == undefined || pais.nacionalidade_masc == null || pais.nacionalidade_masc.length > 100){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira a nacionalidade masculina de forma correta.]'
-    else if(pais.nacionalidade_fem == '' || pais.nacionalidade_fem == undefined || pais.nacionalidade_fem == null || pais.nacionalidade_fem.length > 100)
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    } else if(pais.nacionalidade_fem == '' || pais.nacionalidade_fem == undefined || pais.nacionalidade_fem == null || pais.nacionalidade_fem.length > 100){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira a nacionalidade feminina de forma correta.]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    }
     else{
         return false
     }

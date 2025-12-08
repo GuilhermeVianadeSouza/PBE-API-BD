@@ -151,9 +151,10 @@ const deletarGenero = async function (id) {
 }
 
 const validarDadosGenero = async function (genero) {
-    if(genero.nome == "" || genero.nome == null || genero.nome == undefined || genero.nome.length > 100)
-        return MESSAGES.ERROR_REQUIRED_FIELDS += '[Insira corretamente o nome do gênero]'
-    else
+    if(genero.nome == "" || genero.nome == null || genero.nome == undefined || genero.nome.length > 100){
+        MESSAGES.ERROR_REQUIRED_FIELDS += '[Insira corretamente o nome do gênero]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
+    } else
         return false
 }
 
