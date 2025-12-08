@@ -47,7 +47,6 @@ let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
             return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
         }
     }catch(error){
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }

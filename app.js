@@ -34,6 +34,7 @@ const controllerPersonagem          =           require('./controller/personagem
 const controllerAtor                =           require('./controller/ator/controller_ator.js')
 const controllerDiretor             =           require('./controller/diretor/controller_diretor.js')
 const controllerDublador            =           require('./controller/dublador/controller_dublador.js')
+const controllerEstudio             =           require('./controller/estudio/controller_estudio.js')
 
 //EndPoinst para a rota de Filme
 
@@ -387,6 +388,47 @@ app.delete('/v1/locadora/dublador/:id', cors(), async function(request, response
     let dublador = await controllerDublador.deletarDublador(idDublador)
     response.status(dublador.status_code)
     response.json(dublador)
+})
+
+app.get('/v1/locadora/estudio', cors(), async function(request, response){
+    let estudio = await controllerEstudio.listarTodosOsEstudios()
+    response.status(estudio.status_code)
+    response.json(estudio)
+})
+
+app.get('/v1/locadora/estudio/:id', cors(), async function(request, response){
+    let idEstudio = request.params.id
+    let estudio = await controllerEstudio.listarEstudioPorId(idEstudio)
+    response.status(estudio.status_code)
+    response.json(estudio)
+})
+
+app.post('/v1/locadora/estudio/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let estudio = await controllerEstudio.criarEstudio(dadosBody, contentType)
+    response.status(estudio.status_code)
+    response.json(estudio)
+})
+
+app.put('/v1/locadora/estudio/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idEstudio = request.params.id
+
+    let estudio = await controllerEstudio.atualizarEstudio(dadosBody, contentType, idEstudio)
+    response.status(estudio.status_code)
+    response.json(estudio)
+})
+
+app.delete('/v1/locadora/estudio/:id', cors(), async function(request, response){
+    let idEstudio = request.params.id
+
+    let estudio = await controllerEstudio.deletarEstudio(idEstudio)
+    response.status(estudio.status_code)
+    response.json(estudio)
 })
 
 app.listen(PORT, function(){
