@@ -35,6 +35,8 @@ const controllerAtor                =           require('./controller/ator/contr
 const controllerDiretor             =           require('./controller/diretor/controller_diretor.js')
 const controllerDublador            =           require('./controller/dublador/controller_dublador.js')
 const controllerEstudio             =           require('./controller/estudio/controller_estudio.js')
+const controllerProdutora           =           require('./controller/produtora/controller_produtora.js')
+const controllerRoterista           =           require('./controller/roterista/controller_roterista.js')
 
 //EndPoinst para a rota de Filme
 
@@ -429,6 +431,47 @@ app.delete('/v1/locadora/estudio/:id', cors(), async function(request, response)
     let estudio = await controllerEstudio.deletarEstudio(idEstudio)
     response.status(estudio.status_code)
     response.json(estudio)
+})
+
+app.get('/v1/locadora/produtora', cors(), async function(request, response){
+    let produtora = await controllerProdutora.listarTodosAsProdutoras()
+    response.status(produtora.status_code)
+    response.json(produtora)
+})
+
+app.get('/v1/locadora/produtora/:id', cors(), async function(request, response){
+    let idProdutora = request.params.id
+    let produtora = await controllerProdutora.listarProdutoraPorId(idProdutora)
+    response.status(produtora.status_code)
+    response.json(produtora)
+})
+
+app.post('/v1/locadora/produtora/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let produtora = await controllerProdutora.criarProdutora(dadosBody, contentType)
+    response.status(produtora.status_code)
+    response.json(produtora)
+})
+
+app.put('/v1/locadora/produtora/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idProdutora = request.params.id
+
+    let produtora = await controllerProdutora.atualizarProdutora(dadosBody, contentType, idProdutora)
+    response.status(produtora.status_code)
+    response.json(produtora)
+})
+
+app.delete('/v1/locadora/produtora/:id', cors(), async function(request, response){
+    let idProdutora = request.params.id
+
+    let produtora = await controllerProdutora.deletarProdutora(idProdutora)
+    response.status(produtora.status_code)
+    response.json(produtora)
 })
 
 app.listen(PORT, function(){
