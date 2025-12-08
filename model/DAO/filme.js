@@ -55,7 +55,6 @@ const getSelectAllMovies = async function(){
         else
             return false
     } catch (error) {
-        // console.log(error)
         return false
     }
 }

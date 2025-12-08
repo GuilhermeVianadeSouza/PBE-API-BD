@@ -59,8 +59,8 @@ const setInsertGenre = async function (genero) {
         let sql = `insert into tbl_genero (nome)
                     values ('${genero.nome}')`
         
-        let result = await prisma.$queryRawUnsafe(sql)
-        if (Array.isArray(result)){
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result){
             return result
         } else {
             return false
@@ -76,7 +76,7 @@ const setUpdateGenre = async function (genero) {
         
         where id_genero = ${genero.id_genero}`
 
-        let result = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
         if (result){
             return result
         } else {
@@ -91,7 +91,7 @@ const deleteGenre = async function (id){
     try {
         let sql = `delete from tbl_genero where id_genero = ${id}`
 
-        let result = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
         if(result){
             return result
         } else {

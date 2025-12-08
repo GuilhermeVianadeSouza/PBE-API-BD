@@ -58,16 +58,15 @@ const getSelectLastCountryId = async function () {
 
 const setInsertCountry = async function (pais) {
     try{
-        let sql = `INSERT INTO tbl_pais(nome, sigla, nacionalidade_masc, nacionalidade_fem)
+        let sql = `INSERT INTO tbl_pais(nome, sigla, nacionalidade)
                     VALUES ('${pais.nome}',
                             '${pais.sigla}',
-                            '${pais.nacionalidade_masc}',
-                            '${pais.nacionalidade_fem}'
+                            '${pais.nacionalidade}'
                             )`
 
-        let result = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
 
-        if(Array.isArray(result))
+        if(result)
             return result
         else {
             return false
@@ -84,12 +83,11 @@ const setUpdateCountry = async function (pais) {
         let sql = `update tbl_pais set
                     nome = '${pais.nome}',
                     sigla = '${pais.sigla}',
-                    nacionalidade_masc = '${pais.nacionalidade_masc}',
-                    nacionalidade_fem = '${pais.nacionalidade_fem}'
-
+                    nacionalidade = '${pais.nacionalidade}'
+                    
                     where id_pais = ${pais.id_pais};`
 
-        let result = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
         if (result){
             return result
         }else{
@@ -104,7 +102,7 @@ const deleteCountry = async function(id){
     try {
         let sql = `delete from tbl_pais where id_pais = ${id}`
 
-        let result = await prisma.$queryRawUnsafe(sql)
+        let result = await prisma.$executeRawUnsafe(sql)
 
         if(result){
             return result
