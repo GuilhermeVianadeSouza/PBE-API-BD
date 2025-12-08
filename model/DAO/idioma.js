@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente ao genero;
+ * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente ao idioma;
  * Data: 1/10/2025;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0

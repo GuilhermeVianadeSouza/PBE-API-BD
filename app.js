@@ -474,6 +474,47 @@ app.delete('/v1/locadora/produtora/:id', cors(), async function(request, respons
     response.json(produtora)
 })
 
+app.get('/v1/locadora/roterista', cors(), async function(request, response){
+    let roterista = await controllerRoterista.listarTodosOsRoterista()
+    response.status(roterista.status_code)
+    response.json(roterista)
+})
+
+app.get('/v1/locadora/roterista/:id', cors(), async function(request, response){
+    let idRoterista = request.params.id
+    let roterista = await controllerRoterista.listarRoteristaPorId(idRoterista)
+    response.status(roterista.status_code)
+    response.json(roterista)
+})
+
+app.post('/v1/locadora/roterista/', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    
+    let contentType = request.headers['content-type']
+
+    let roterista = await controllerRoterista.criarRoterista(dadosBody, contentType)
+    response.status(roterista.status_code)
+    response.json(roterista)
+})
+
+app.put('/v1/locadora/roterista/:id', cors(), bodyParserJSON, async function (request, response){
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    let idRoterista = request.params.id
+
+    let roterista = await controllerRoterista.atualizarRoterista(dadosBody, contentType, idRoterista)
+    response.status(roterista.status_code)
+    response.json(roterista)
+})
+
+app.delete('/v1/locadora/roterista/:id', cors(), async function(request, response){
+    let idRoterista = request.params.id
+
+    let roterista = await controllerRoterista.deletarRoterista(idRoterista)
+    response.status(roterista.status_code)
+    response.json(roterista)
+})
+
 app.listen(PORT, function(){
     console.log("API aguardando request !!!")
 })

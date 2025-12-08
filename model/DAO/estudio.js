@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente a tabela tbl_diretor;
+ * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente a tabela tbl_estudio;
  * Data: 08/12/2025 - Data Inicio;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0
