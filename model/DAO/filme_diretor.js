@@ -43,7 +43,7 @@ const getSelectDirectorMoviesByID = async function (id){
     }
 }
 
-//RETORNA UMA LISTA DE GENEROS FILTRANDO PELO ID DO FILME.
+
 const getSelectDirectorsByIdMovies = async function (id_filme){
     try {
         let sql = `select tbl_diretor.id_diretor, tbl_diretor.nome 

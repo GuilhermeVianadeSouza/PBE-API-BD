@@ -45,7 +45,10 @@ let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
                     let resultRoteristas = await controllerFilmeRoterista.listarRoteristaIdFilme(filme.id_filme)
                     if(resultRoteristas.status_code == 200)
                     filme.roteristas = resultRoteristas.items.filmes_roterista
-                
+
+                    let resultProdutora = await controllerFilmeProdutora.listarProdutoraIdFilme(filme.id_filme)
+                    if(resultProdutora.status_code == 200)
+                    filme.produtoras = resultProdutora.items.filmes_produtora
             }
 
                 MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCESS_REQUEST.status
@@ -88,6 +91,10 @@ const buscarFilmesId = async function(id){
                         let resultRoteristas = await controllerFilmeRoterista.listarRoteristaIdFilme(filme.id_filme)
                         if(resultRoteristas.status_code == 200)
                         filme.roteristas = resultRoteristas.items.filmes_roterista
+
+                        let resultProdutora = await controllerFilmeProdutora.listarProdutoraIdFilme(filme.id_filme)
+                        if(resultProdutora.status_code == 200)
+                        filme.produtoras = resultProdutora.items.filmes_produtora
                 }
 
                     MESSAGES.DEFAULT_HEADER.status  = MESSAGES.SUCESS_REQUEST.status
@@ -169,6 +176,14 @@ const inserirFilme = async function(filme, contentType){
                                     return MESSAGES.ERROR_RELATIONAL_INSERTION 
                             }
                         }
+                    if (filme.produtoras && filme.produtoras.length > 0) {
+                        for (let produtora of filme.produtoras){
+                            let filmeProdutora = {id_filme: lastID, id_produtora: produtora.id, tipo_participacao: produtora.tipo_participacao, produtora_principal: produtora.produtora_principal}
+                            let resultFilmesProdutora = await controllerFilmeProdutora.inserirFilmeProdutora(filmeProdutora, contentType)
+                            if (resultFilmesProdutora.status_code != 201)
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION
+                        }
+                    }
                     
                     //Adiciona o id no JSON com os dados do filme
                         filme.id = lastID
@@ -191,6 +206,9 @@ const inserirFilme = async function(filme, contentType){
 
                         let resultDadosRoterista = await controllerFilmeRoterista.listarRoteristaIdFilme(lastID)
                         if(resultDadosDiretores.status_code == 200) filme.roteristas = resultDadosRoterista.items.filmes_roterista
+
+                        let resultDadosProdutoras = await controllerFilmeProdutora.listarProdutoraIdFilme(lastID)
+                        if(resultDadosProdutoras.status_code == 200) filme.produtoras = resultDadosProdutoras.items.filmes_produtora
                         
                         return MESSAGES.DEFAULT_HEADER //201
                     } else{
@@ -258,7 +276,16 @@ const atualizarFilme = async function(filme, id, contentType){
                                 if(resultFilmesRoterista.status_code != 201)
                                     return MESSAGES.ERROR_RELATIONAL_INSERTION
                         }
-                        
+                        let deletarRelacaoFilmeProdutora = await controllerFilmeProdutora.excluirFilmeProdutoraPorIdFilme(filme.id)
+                        if(deletarRelacaoFilmeProdutora.status_code != 200){
+                            return deletarRelacaoFilmeProdutora
+                        }
+                        for(produtora of filme.produtoras){
+                            let filmeProdutora = {id_filme: filme.id, id_produtora: produtora.id, tipo_participacao: produtora.tipo_participacao, produtora_principal: produtora.produtora_principal}
+                            let resultFilmesProdutora = await controllerFilmeProdutora.inserirFilmeProdutora(filmeProdutora, contentType)
+                            if(resultFilmesProdutora.status_code != 201)
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION
+                        }
                         
                         //Processamento da verdadeira.
                         //Chama a função para Atualizar um novo filme no Banco de Dados.
@@ -311,6 +338,9 @@ const excluirFilme = async function(id){
                         if(deletarRelacaoFilmeRoterista.status_code != 200 && deletarRelacaoFilmeRoterista.status_code != 404)
                             return deletarRelacaoFilmeRoterista
 
+                        let deletarRelacaoFilmeProdutora = await controllerFilmeProdutora.excluirFilmeProdutoraPorIdFilme(id)
+                        if(deletarRelacaoFilmeProdutora.status_code != 200 && deletarRelacaoFilmeProdutora.status_code != 404)
+                            return deletarRelacaoFilmeProdutora
 
                         let resultFilmes = await filmeDAO.setDeleteMovies(id)
 

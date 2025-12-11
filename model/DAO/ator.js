@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente a tabela tbl_ator;
+ * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente a tabela tbl ator;
  * Data: 08/12/2025 - Data Inicio;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0

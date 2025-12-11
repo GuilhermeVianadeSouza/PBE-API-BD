@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente ao pai;
+ * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente ao pais;
  * Data: 1/10/2025;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0

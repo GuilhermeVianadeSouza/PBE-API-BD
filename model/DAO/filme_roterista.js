@@ -11,7 +11,7 @@ const { PrismaClient } = require('../../generated/prisma')
 
 const prisma = new PrismaClient()
 
-//listar todos os filmes e generos do banco de dados
+
 const getSelectAllMoviesScreenwriter = async function (){
     try{
         
@@ -43,7 +43,7 @@ const getSelectScreenwriterMoviesByID = async function (id){
     }
 }
 
-//RETORNA UMA LISTA DE GENEROS FILTRANDO PELO ID DO FILME.
+
 const getSelectScreenwriterByIdMovies = async function (id_filme){
     try {
         let sql = `select tbl_roterista.id_roterista, tbl_roterista.nome 
