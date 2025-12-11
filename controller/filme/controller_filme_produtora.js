@@ -146,6 +146,7 @@ const listarFilmesIdProdutora = async function(idProdutora){
             return MESSAGES.ERROR_CONTENT_TYPE
         }
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
  }
@@ -253,9 +254,9 @@ const validarDadosFilmeProdutora = async function (filmeProdutora) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Id_Filme Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
     } 
-    else if (filmeProdutora.tipo_credito != null && (typeof filmeProdutora.tipo_credito != 'string' || filmeProdutora.tipo_credito.length > 50)) {
-         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Tipo de Crédito inválido ou muito longo]'
-         return MESSAGES.ERROR_REQUIRED_FIELDS
+    else if (filmeProdutora.id_produtora <= 0 ||isNaN(filmeProdutora.id_produtora) || filmeProdutora.id_produtora == "" || filmeProdutora.id_produtora == null || filmeProdutora.id_produtora == undefined){
+        MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Id_Produtora Incorreto]'
+        return MESSAGES.ERROR_REQUIRED_FIELDS
     }
     else if (filmeProdutora.tipo_participacao != null && (typeof filmeProdutora.tipo_participacao != 'string' || filmeProdutora.tipo_participacao.length > 50)) {
          MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Tipo de participação inválido ou muito longo]'

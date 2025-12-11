@@ -49,6 +49,10 @@ let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
                     let resultProdutora = await controllerFilmeProdutora.listarProdutoraIdFilme(filme.id_filme)
                     if(resultProdutora.status_code == 200)
                     filme.produtoras = resultProdutora.items.filmes_produtora
+
+                    let resultEstudio = await controllerFilmeEstudio.listarEstudioIdFilme(filme.id_filme)
+                    if(resultEstudio.status_code == 200)
+                    filme.estudios = resultEstudio.items.filmes_estudio
             }
 
                 MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCESS_REQUEST.status
@@ -95,6 +99,10 @@ const buscarFilmesId = async function(id){
                         let resultProdutora = await controllerFilmeProdutora.listarProdutoraIdFilme(filme.id_filme)
                         if(resultProdutora.status_code == 200)
                         filme.produtoras = resultProdutora.items.filmes_produtora
+
+                        let resultEstudio = await controllerFilmeEstudio.listarEstudioIdFilme(filme.id_filme)
+                        if(resultEstudio.status_code == 200)
+                        filme.estudios = resultEstudio.items.filmes_estudio
                 }
 
                     MESSAGES.DEFAULT_HEADER.status  = MESSAGES.SUCESS_REQUEST.status
@@ -184,7 +192,15 @@ const inserirFilme = async function(filme, contentType){
                                 return MESSAGES.ERROR_RELATIONAL_INSERTION
                         }
                     }
-                    
+                    if(filme.estudios && filme.estudios.length > 0){
+                        for (let estudio of filme.estudios){
+                            let filmeEstudio = {id_filme: lastID, tipo_associacao: estudio.tipo_associacao, id_estudio: estudio.id}
+                            let resultFilmesEstudio = await controllerFilmeEstudio.inserirFilmeEstudio(filmeEstudio, contentType)
+                       
+                            if(resultFilmesEstudio.status_code != 201)
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION
+                        }
+                    }
                     //Adiciona o id no JSON com os dados do filme
                         filme.id = lastID
                         MESSAGES.DEFAULT_HEADER.status          =        MESSAGES.SUCESS_CREATED_ITEM.status
@@ -209,6 +225,9 @@ const inserirFilme = async function(filme, contentType){
 
                         let resultDadosProdutoras = await controllerFilmeProdutora.listarProdutoraIdFilme(lastID)
                         if(resultDadosProdutoras.status_code == 200) filme.produtoras = resultDadosProdutoras.items.filmes_produtora
+
+                        let resultDadosEstudios = await controllerFilmeEstudio.listarEstudioIdFilme(lastID)
+                        if(resultDadosEstudios.status_code == 200) filme.estudios = resultDadosEstudios.items.filmes_estudio
                         
                         return MESSAGES.DEFAULT_HEADER //201
                     } else{
@@ -224,7 +243,6 @@ const inserirFilme = async function(filme, contentType){
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500        
     } 
 }
@@ -286,7 +304,17 @@ const atualizarFilme = async function(filme, id, contentType){
                             if(resultFilmesProdutora.status_code != 201)
                                 return MESSAGES.ERROR_RELATIONAL_INSERTION
                         }
-                        
+                        let deletarRelacaoFilmeEstudio = await controllerFilmeEstudio.excluirFilmeEstudioPorIdFilme(filme.id)
+                        if(deletarRelacaoFilmeEstudio.status_code != 200) {
+                            return deletarRelacaoFilmeEstudio
+                        }
+                        for (let estudio of filme.estudios){
+                            let filmeEstudio = {id_filme: filme.id, tipo_associacao: estudio.tipo_associacao, id_estudio: estudio.id}
+                            let resultFilmesEstudio = await controllerFilmeEstudio.inserirFilmeEstudio(filmeEstudio, contentType)
+                       
+                            if(resultFilmesEstudio.status_code != 201)
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION
+                        }
                         //Processamento da verdadeira.
                         //Chama a função para Atualizar um novo filme no Banco de Dados.
                         let resultFilmes = await filmeDAO.setUpdateMovies(filme)
@@ -341,6 +369,10 @@ const excluirFilme = async function(id){
                         let deletarRelacaoFilmeProdutora = await controllerFilmeProdutora.excluirFilmeProdutoraPorIdFilme(id)
                         if(deletarRelacaoFilmeProdutora.status_code != 200 && deletarRelacaoFilmeProdutora.status_code != 404)
                             return deletarRelacaoFilmeProdutora
+
+                        let deletarRelacaoFilmeEstudio = await controllerFilmeEstudio.excluirFilmeEstudioPorIdFilme(id)
+                        if(deletarRelacaoFilmeEstudio.status_code != 200 && deletarRelacaoFilmeEstudio.status_code != 404)
+                            return deletarRelacaoFilmeEstudio
 
                         let resultFilmes = await filmeDAO.setDeleteMovies(id)
 
