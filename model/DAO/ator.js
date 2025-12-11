@@ -78,14 +78,12 @@ const setInsertActor = async function (ator) {
                             )`
 
         let result = await prisma.$executeRawUnsafe(sql)
-        console.log(result)
         if(result)
             return result
         else {
             return false
         }
     } catch(error){
-        console.log(error)
         return false
     }
 }

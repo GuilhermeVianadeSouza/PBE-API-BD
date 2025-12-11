@@ -1,5 +1,5 @@
 /******************************************************************************************************************************
- * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente ao relacionamento entre filme e Genero;
+ * Objetivo: Arquivo Responsável pelo CRUD de dados no MySQL referente ao relacionamento entre filme e Diretor;
  * Data: 05/11/2025;
  * Autor: Guilherme Viana de Souza
  * Versão: 1.0
@@ -12,10 +12,10 @@ const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient()
 
 //listar todos os filmes e generos do banco de dados
-const getSelectAllMoviesGenre = async function (){
+const getSelectAllMoviesDirector = async function (){
     try{
         
-        let sql = `select * from tbl_genero_filme order by id desc`
+        let sql = `select * from tbl_diretor_filme order by id desc`
 
         let result = await prisma.$queryRawUnsafe(sql)
         if(Array.isArray(result)){
@@ -28,9 +28,9 @@ const getSelectAllMoviesGenre = async function (){
     }
 }
 
-const getSelectGenreMoviesByID = async function (id){
+const getSelectDirectorMoviesByID = async function (id){
     try {
-        let sql = `select * from tbl_genero_filme where id = ${id}`
+        let sql = `select * from tbl_diretor_filme where id = ${id}`
         
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result)){
@@ -44,14 +44,14 @@ const getSelectGenreMoviesByID = async function (id){
 }
 
 //RETORNA UMA LISTA DE GENEROS FILTRANDO PELO ID DO FILME.
-const getSelectGenresByIdMovies = async function (id_filme){
+const getSelectDirectorsByIdMovies = async function (id_filme){
     try {
-        let sql = `select tbl_genero.id_genero, tbl_genero.nome 
+        let sql = `select tbl_diretor.id_diretor, tbl_diretor.nome 
                         from tbl_filme
-                            inner join tbl_genero_filme
-                                on tbl_filme.id_filme = tbl_genero_filme.id_filme 
-                            inner join tbl_genero
-                                on tbl_genero.id_genero = tbl_genero_filme.id_genero
+                            inner join tbl_diretor_filme
+                                on tbl_filme.id_filme = tbl_diretor_filme.id_filme 
+                            inner join tbl_diretor
+                                on tbl_diretor.id_diretor = tbl_diretor_filme.id_diretor
                         where tbl_filme.id_filme = ${id_filme}`
 
         let result = await prisma.$queryRawUnsafe(sql)
@@ -65,15 +65,15 @@ const getSelectGenresByIdMovies = async function (id_filme){
     }
 }
 
-const getSelectMoviesByIdGenres = async function (id_genero){
+const getSelectMoviesByIdDirector = async function (id_diretor){
     try {
-        let sql = `select tbl_filme.id, tbl_filme.nome, tbl_filme.sinopse 
+        let sql = `select tbl_filme.id_filme, tbl_filme.nome, tbl_filme.sinopse 
                         from tbl_filme
-                            inner join tbl_genero_filme
-                                on tbl_filme.id = tbl_genero_filme.id_filme 
-                            inner join tbl_genero
-                                on tbl_genero.id_genero = tbl_genero_filme.id_genero
-                        where tbl_genero.id_genero = ${id_genero}`
+                            inner join tbl_diretor_filme
+                                on tbl_filme.id_filme = tbl_diretor_filme.id_filme 
+                            inner join tbl_diretor
+                                on tbl_diretor.id_diretor = tbl_diretor_filme.id_diretor
+                        where tbl_diretor.id_diretor = ${id_diretor}`
         
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result)){
@@ -86,9 +86,9 @@ const getSelectMoviesByIdGenres = async function (id_genero){
     }
 }
 
-const getSelectLastGenreByID = async function() {
+const getSelectLastDirectorGenreId = async function() {
     try {
-        let sql = `select id from tbl_genero_filme order by id desc limit 1`
+        let sql = `select id from tbl_diretor_filme order by id desc limit 1`
 
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result)){
@@ -101,10 +101,10 @@ const getSelectLastGenreByID = async function() {
     }
 }
 
-const setInsertMoviesGenres = async function (filmeGenero) {
+const setInsertMoviesDirector = async function (filmeDiretor) {
     try {
-        let sql = `insert into tbl_genero_filme (id_filme, id_genero)
-                    values (${filmeGenero.id_filme}, ${filmeGenero.id_genero})`
+        let sql = `insert into tbl_diretor_filme (id_filme, tipo_direcao, id_diretor)
+                    values (${filmeDiretor.id_filme}, '${filmeDiretor.tipo_direcao}', ${filmeDiretor.id_diretor})`
         
         let result = await prisma.$executeRawUnsafe(sql)
         if (result){
@@ -117,13 +117,14 @@ const setInsertMoviesGenres = async function (filmeGenero) {
     }
 }
 
-const setUpdateMoviesGenres = async function (filmeGenero) {
+const setUpdateMoviesDirector = async function (filmeDiretor) {
     try {
-        let sql = `update tbl_genero_filme set 
-                        id_filme = ${filmeGenero.id_filme},
-                        id_genero = ${filmeGenero.id_genero}
+        let sql = `update tbl_diretor_filme set 
+                        id_filme = ${filmeDiretor.id_filme},
+                        tipo_direcao = '${filmeDiretor.tipo_direcao}',
+                        id_diretor = ${filmeDiretor.id_diretor}
         
-                    where id = ${filmeGenero.id}`
+                    where id = ${filmeDiretor.id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result){
@@ -136,9 +137,9 @@ const setUpdateMoviesGenres = async function (filmeGenero) {
     }
 }
 
-const setdeleteMoviesGenres = async function (id){
+const setDeleteMoviesDirector = async function (id){
     try {
-        let sql = `delete from tbl_genero_filme where id = ${id}`
+        let sql = `delete from tbl_diretor_filme where id = ${id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if(result){
@@ -151,9 +152,9 @@ const setdeleteMoviesGenres = async function (id){
     }
 }
 
-const setDeleteMoviesGenresByIdMovies = async function (id){
+const setDeleteMoviesDirectorsByIdMovies = async function (id){
     try {
-        let sql = `delete from tbl_genero_filme where id_filme = ${id}`
+        let sql = `delete from tbl_diretor_filme where id_filme = ${id}`
         
         let result = await prisma.$executeRawUnsafe(sql)
         if(result){
@@ -166,9 +167,9 @@ const setDeleteMoviesGenresByIdMovies = async function (id){
     }
 }
 
-const setDeleteMoviesGenresByIdGenres = async function(id){
+const setDeleteMoviesDirectorsByIdDirector = async function(id){
     try {
-        let sql = `delete from tbl_genero_filme where id_genero = ${id}`
+        let sql = `delete from tbl_diretor_filme where id_diretor = ${id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if(result){
@@ -182,14 +183,14 @@ const setDeleteMoviesGenresByIdGenres = async function(id){
 }
 
 module.exports = {
-    getSelectAllMoviesGenre,
-    getSelectGenreMoviesByID,
-    getSelectGenresByIdMovies,
-    getSelectMoviesByIdGenres,
-    getSelectLastGenreByID,
-    setInsertMoviesGenres,
-    setUpdateMoviesGenres, 
-    setdeleteMoviesGenres,
-    setDeleteMoviesGenresByIdMovies,
-    setDeleteMoviesGenresByIdGenres
+    getSelectAllMoviesDirector,
+    getSelectDirectorMoviesByID,
+    getSelectDirectorsByIdMovies,
+    getSelectLastDirectorGenreId,
+    getSelectMoviesByIdDirector,
+    setInsertMoviesDirector,
+    setUpdateMoviesDirector,
+    setDeleteMoviesDirector,
+    setDeleteMoviesDirectorsByIdDirector,
+    setDeleteMoviesDirectorsByIdMovies
 }
