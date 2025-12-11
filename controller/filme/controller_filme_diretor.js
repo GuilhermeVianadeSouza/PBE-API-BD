@@ -250,7 +250,7 @@ const validarDadosFilmeDiretor = async function (filmeDiretor) {
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Id_Filme Incorreto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
     } 
-    else if (filmeDiretor.tipo_direcao == '' || filmeDiretor.tipo_direcao == null || filmeDiretor.tipo_direcao == undefined || filmeDiretor.tipo_direcao.length > 100 || typeof filmeDiretor.tipo_direcao != 'string'){
+    else if (filmeDiretor.tipo_direcao == '' || filmeDiretor.tipo_direcao == undefined || filmeDiretor.tipo_direcao.length > 100 || typeof filmeDiretor.tipo_direcao != 'string'){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira um tipo de direcao correto]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
     }

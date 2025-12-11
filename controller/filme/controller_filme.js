@@ -39,9 +39,13 @@ let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
                     filme.generos = resultGeneros.items.filmes_generos
 
                     let resultDiretores = await controllerFilmeDiretor.listarDiretorIdFilme(filme.id_filme)
-                    if(resultDiretores.status_code == 200) {
+                    if(resultDiretores.status_code == 200) 
                     filme.diretores = resultDiretores.items.filme_diretor
-                }
+
+                    let resultRoteristas = await controllerFilmeRoterista.listarRoteristaIdFilme(filme.id_filme)
+                    if(resultRoteristas.status_code == 200)
+                    filme.roteristas = resultRoteristas.items.filmes_roterista
+                
             }
 
                 MESSAGES.DEFAULT_HEADER.status      = MESSAGES.SUCESS_REQUEST.status
@@ -78,9 +82,12 @@ const buscarFilmesId = async function(id){
                         filme.genero = resultGeneros.items.filmes_generos
 
                         let resultDiretores = await controllerFilmeDiretor.listarDiretorIdFilme(filme.id_filme)
-                        if(resultDiretores.status_code == 200) {
+                        if(resultDiretores.status_code == 200) 
                         filme.diretores = resultDiretores.items.filme_diretor
-                    }
+                        
+                        let resultRoteristas = await controllerFilmeRoterista.listarRoteristaIdFilme(filme.id_filme)
+                        if(resultRoteristas.status_code == 200)
+                        filme.roteristas = resultRoteristas.items.filmes_roterista
                 }
 
                     MESSAGES.DEFAULT_HEADER.status  = MESSAGES.SUCESS_REQUEST.status
@@ -148,7 +155,21 @@ const inserirFilme = async function(filme, contentType){
                                     return MESSAGES.ERROR_RELATIONAL_INSERTION 
                             }
                         }
-
+                    if (filme.roteristas && filme.roteristas.length > 0) {
+                            for (let roterista of filme.roteristas) {
+                                let filmeRoterista = { 
+                                    id_filme: lastID, 
+                                    id_roterista: roterista.id,
+                                    tipo_credito: roterista.tipo_credito,        
+                                    detalhe_adaptacao: roterista.detalhe_adaptacao 
+                                }
+                                
+                                let resultFilmesRoterista = await controllerFilmeRoterista.inserirFilmeRoterista(filmeRoterista, contentType)
+                                if (resultFilmesRoterista.status_code != 201)
+                                    return MESSAGES.ERROR_RELATIONAL_INSERTION 
+                            }
+                        }
+                    
                     //Adiciona o id no JSON com os dados do filme
                         filme.id = lastID
                         MESSAGES.DEFAULT_HEADER.status          =        MESSAGES.SUCESS_CREATED_ITEM.status
@@ -167,6 +188,9 @@ const inserirFilme = async function(filme, contentType){
                         //Apagando o genero que vem apenas com o id na requisição, é realizado uma busca pelo id do filme trazendo todos os generos, e assim recriando o genero novamente que retornara id e o nome que foram guardado na let.
                         let resultDadosDiretores = await controllerFilmeDiretor.listarDiretorIdFilme(lastID)
                         if(resultDadosDiretores.status_code == 200) filme.diretores = resultDadosDiretores.items.filme_diretor
+
+                        let resultDadosRoterista = await controllerFilmeRoterista.listarRoteristaIdFilme(lastID)
+                        if(resultDadosDiretores.status_code == 200) filme.roteristas = resultDadosRoterista.items.filmes_roterista
                         
                         return MESSAGES.DEFAULT_HEADER //201
                     } else{
@@ -182,7 +206,7 @@ const inserirFilme = async function(filme, contentType){
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
- 
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500        
     } 
 }
@@ -224,6 +248,16 @@ const atualizarFilme = async function(filme, id, contentType){
                             if(resultFilmesDiretor.status_code !=201)
                                 return MESSAGES.ERROR_RELATIONAL_INSERTION
                         }
+                        let deletarRelacaoFilmeRoterista = await controllerFilmeRoterista.excluirFilmeRoteristaPorIdFilme(filme.id)
+                        if(deletarRelacaoFilmeRoterista.status_code != 200){
+                            return deletarRelacaoFilmeRoterista
+                        }
+                        for(roterista of filme.roteristas){
+                                let filmeRoterista = { id_filme: filme.id, id_roterista: roterista.id, tipo_credito: roterista.tipo_credito, detalhe_adaptacao: roterista.detalhe_adaptacao}
+                                let resultFilmesRoterista = await controllerFilmeRoterista.inserirFilmeRoterista(filmeRoterista, contentType)
+                                if(resultFilmesRoterista.status_code != 201)
+                                    return MESSAGES.ERROR_RELATIONAL_INSERTION
+                        }
                         
                         
                         //Processamento da verdadeira.
@@ -249,6 +283,7 @@ const atualizarFilme = async function(filme, id, contentType){
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500        
     } 
 }
@@ -271,6 +306,10 @@ const excluirFilme = async function(id){
                         let deletarRelacaoFilmeDiretor = await controllerFilmeDiretor.excluirFilmeDiretorPorIdFilme(id)
                         if(deletarRelacaoFilmeDiretor.status_code != 200 && deletarRelacaoFilmeDiretor.status_code != 404)
                             return deletarRelacaoFilmeDiretor
+
+                        let deletarRelacaoFilmeRoterista = await controllerFilmeRoterista.excluirFilmeRoteristaPorIdFilme(id)
+                        if(deletarRelacaoFilmeRoterista.status_code != 200 && deletarRelacaoFilmeRoterista.status_code != 404)
+                            return deletarRelacaoFilmeRoterista
 
 
                         let resultFilmes = await filmeDAO.setDeleteMovies(id)
