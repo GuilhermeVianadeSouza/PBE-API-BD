@@ -129,7 +129,7 @@ const atualizarIdioma = async function(idioma, contentType, id){
             return MESSAGES.ERROR_CONTENT_TYPE 
         }
     } catch (error) {
-        console.log(error)
+
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -155,7 +155,7 @@ const deletarIdioma = async function(id){
             return verificacaoID
         }
     } catch (error) {
-        console.log(error)
+
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
 }

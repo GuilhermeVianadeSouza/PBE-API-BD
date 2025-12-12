@@ -135,7 +135,6 @@ const deletarElenco = async function(id) {
             id = Number(id)
 
             let excluirElenco = await elencoDAO.deleteCast(id)
-            console.log(excluirElenco)
             if(excluirElenco) {
                 MESSAGES.DEFAULT_HEADER.status      =       MESSAGES.SUCESS_DELETED_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code =       MESSAGES.SUCESS_DELETED_ITEM.status_code

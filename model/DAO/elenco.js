@@ -104,14 +104,14 @@ const deleteCast = async function(id){
         let sql = `delete from tbl_elenco where id_elenco = ${id}`
 
         let result = await prisma.$executeRawUnsafe(sql)
-        console.log(result)
+
         if(result){
             return result
         } else {
             return false
         }
     } catch (error) {
-        console.log(error);
+ 
         
         return false
     }

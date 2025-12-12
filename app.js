@@ -39,7 +39,7 @@ const produtoraRoutes  = require('./routers/produtoraRoutes.js')
 const roteristaRoutes  = require('./routers/roteristaRoutes.js')
 const elencoRoutes     = require('./routers/elencoRoutes.js')
 const dublagemRoutes   = require('./routers/dublagemRoutes.js')
-console.log('TESTE DE IMPORTAÇÃO DO ELENCO:', elencoRoutes)
+
 
 //EndPoinst para a rota de Filme
 app.use('/v1/locadora/filme', filmeRoutes)
@@ -54,8 +54,7 @@ app.use('/v1/locadora/personagem', personagemRoutes)
 app.use('/v1/locadora/produtora', produtoraRoutes)
 app.use('/v1/locadora/roterista', roteristaRoutes)
 app.use('/v1/locadora/elenco', elencoRoutes)
-//app.use('/v1/locadora/dublagem', dublagemRoutes)
-console.log('Conteúdo de elencoRoutes:', elencoRoutes)
+app.use('/v1/locadora/dublagem', dublagemRoutes)
 
 app.listen(PORT, function(){
     console.log("API aguardando request !!!")

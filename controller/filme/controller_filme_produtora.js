@@ -146,7 +146,6 @@ const listarFilmesIdProdutora = async function(idProdutora){
             return MESSAGES.ERROR_CONTENT_TYPE
         }
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER
     }
  }
