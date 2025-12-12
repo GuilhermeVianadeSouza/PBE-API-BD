@@ -34,7 +34,7 @@ const listarTodosOsDubladores = async function(){
 const listarDubladorPorId = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0){
+        if(!isNaN(id) && id !='' && id !=null && id !=undefined && id > 0){
             let resultDublador = await dubladorDAO.getSelectVoiceActorById(id)
                 if(resultDublador){
                     if(resultDublador.length > 0){

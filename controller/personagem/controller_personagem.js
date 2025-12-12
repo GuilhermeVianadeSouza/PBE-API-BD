@@ -34,7 +34,7 @@ const listarTodosOsPersonagem = async function(){
 const listarPersonagemPorId = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0){
+        if(!isNaN(id) && id !='' && id !=null && id !=undefined && id > 0){
             let resultPersonagem = await personagemDAO.getSelectCharacterByID(id)
                 if(resultPersonagem){
                     if(resultPersonagem.length > 0){

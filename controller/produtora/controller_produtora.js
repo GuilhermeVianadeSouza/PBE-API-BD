@@ -34,7 +34,7 @@ const listarTodosAsProdutoras = async function(){
 const listarProdutoraPorId = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0){
+        if(!isNaN(id) && id !='' && id !=null && id !=undefined && id > 0){
             let resultProdutora = await produtoraDAO.getSelectProducerById(id)
                 if(resultProdutora){
                     if(resultProdutora.length > 0){

@@ -34,7 +34,7 @@ const listarTodosOsRoterista = async function(){
 const listarRoteristaPorId = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0){
+        if(!isNaN(id) && id !='' && id !=null && id !=undefined && id > 0){
             let resultRoterista = await roteristaDAO.getSelectScreenwriterById(id)
                 if(resultRoterista){
                     if(resultRoterista.length > 0){

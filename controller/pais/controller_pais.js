@@ -34,7 +34,7 @@ const listarTodosOsPaises = async function(){
 const listarPaisporID = async function(id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0) {
+        if(!isNaN(id) && id !='' && id !=null && id !=undefined && id > 0) {
             let resultPaisbyId = await paisDAO.getSelectCountrybyID(id)
             if(resultPaisbyId){
                 if(resultPaisbyId.length > 0){

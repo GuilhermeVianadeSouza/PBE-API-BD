@@ -34,7 +34,7 @@ const listarTodosOsAtores = async function(){
 const listarAtorPorId = async function(id){
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
-        if(!isNaN(id), id !='', id !=null, id !=undefined, id > 0){
+        if(!isNaN(id) && id !='' && id !=null && id !=undefined && id > 0){
             let resultAtor = await atorDAO.getSelectActorById(id)
                 if(resultAtor){
                     if(resultAtor.length > 0){
