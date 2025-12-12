@@ -83,7 +83,7 @@ const criarPais = async function (pais, contentType){
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL
                 }
              } else {
-                 return validarDadosPais
+                 return validar
             }
         } else {
             return MESSAGES.ERROR_CONTENT_TYPE
@@ -163,14 +163,10 @@ const validarDadosPais = async function(pais){
     }else if(pais.sigla == '' || pais.sigla == undefined || pais.sigla == null || pais.sigla.length > 2){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira uma sigla valida]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
-    } else if(pais.nacionalidade_masc == '' || pais.nacionalidade_masc == undefined || pais.nacionalidade_masc == null || pais.nacionalidade_masc.length > 100){
+    } else if(pais.nacionalidade == '' || pais.nacionalidade == undefined || pais.nacionalidade == null || pais.nacionalidade.length > 100){
         MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira a nacionalidade masculina de forma correta.]'
         return MESSAGES.ERROR_REQUIRED_FIELDS
-    } else if(pais.nacionalidade_fem == '' || pais.nacionalidade_fem == undefined || pais.nacionalidade_fem == null || pais.nacionalidade_fem.length > 100){
-        MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Insira a nacionalidade feminina de forma correta.]'
-        return MESSAGES.ERROR_REQUIRED_FIELDS
-    }
-    else{
+    } else{
         return false
     }
 }
